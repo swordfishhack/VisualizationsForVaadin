@@ -1,0 +1,6 @@
+This is a patched version of the existing VisualizationsForVaadin add-on written by Phil B.
+
+The patch includes full support for the corechart API, including chartArea options.
+
+For more details on the add-on, please refer to the existing
+add-on page at http://vaadin.com/directory#addon/visualizationsforvaadin.
