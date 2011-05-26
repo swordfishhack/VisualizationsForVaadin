@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Vaadin-License-Title: apache
+Implementation-Vendor: phil
+Implementation-Title: VisualizationsForVaadin
+Implementation-Version: 0.0.2
+Vaadin-Package-Version: 1
+Vaadin-Widgetsets: org.vaadin.vaadinvisualizations.widgetset.Vaadinvis
+ ualizationApplicationWidgetset
+Class-Path: 
+
