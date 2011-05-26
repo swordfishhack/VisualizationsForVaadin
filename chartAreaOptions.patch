@@ -1,0 +1,802 @@
+Index: src/org/vaadin/vaadinvisualizations/AreaChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/AreaChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/AreaChart.java	(working copy)
+@@ -3,7 +3,7 @@
+ 
+ 
+ @com.vaadin.ui.ClientWidget(org.vaadin.vaadinvisualizations.widgetset.client.ui.VAreaChart.class)
+-public class AreaChart extends CommonVisualizationComponent{
++public class AreaChart extends ChartAreaVisualizationComponent{
+ 
+ 
+ 	/**
+Index: src/org/vaadin/vaadinvisualizations/BarChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/BarChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/BarChart.java	(working copy)
+@@ -4,7 +4,7 @@
+ 
+ 
+ @com.vaadin.ui.ClientWidget(org.vaadin.vaadinvisualizations.widgetset.client.ui.VBarChart.class)
+-public class BarChart extends CommonVisualizationComponent{
++public class BarChart extends ChartAreaVisualizationComponent{
+ 
+ 
+ 
+Index: src/org/vaadin/vaadinvisualizations/ChartAreaVisualizationComponent.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/ChartAreaVisualizationComponent.java	(revision 0)
++++ src/org/vaadin/vaadinvisualizations/ChartAreaVisualizationComponent.java	(revision 0)
+@@ -0,0 +1,99 @@
++package org.vaadin.vaadinvisualizations;
++
++import java.util.HashMap;
++import java.util.Map;
++
++import org.vaadin.vaadinvisualizations.widgetset.client.ui.VChartAreaVisualizationWidget;
++
++import com.vaadin.terminal.PaintException;
++import com.vaadin.terminal.PaintTarget;
++
++public class ChartAreaVisualizationComponent extends
++		CommonVisualizationComponent {
++
++	private static final String CHART_AREA_OPT_NAME_PREFIX = VChartAreaVisualizationWidget.CHART_AREA_OPT_NAME_PREFIX;
++
++	private Map<String, Object> chartAreaOptions = new HashMap<String, Object>();
++
++	/**
++	 * Set the chart area height.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaHeight(String value) {
++		this.chartAreaOptions.put("height", value);
++	}
++
++	/**
++	 * Set the chart area height.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaHeight(double value) {
++		this.chartAreaOptions.put("height", value);
++	}
++
++	/**
++	 * Set the chart area left.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaLeft(double value) {
++		this.chartAreaOptions.put("left", value);
++	}
++
++	/**
++	 * Set the chart area left.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaLeft(String value) {
++		this.chartAreaOptions.put("left", value);
++	}
++
++	/**
++	 * Set the chart area top.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaTop(double value) {
++		this.chartAreaOptions.put("top", value);
++	}
++
++	/**
++	 * Set the chart area top.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaTop(String value) {
++		this.chartAreaOptions.put("top", value);
++	}
++
++	/**
++	 * Set the chart area width.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaWidth(double value) {
++		this.chartAreaOptions.put("width", value);
++	}
++
++	/**
++	 * Set the chart area width.
++	 * 
++	 * @param value
++	 */
++	public void setChartAreaWidth(String value) {
++		this.chartAreaOptions.put("width", value);
++	}
++
++
++	@Override
++	public void paintContent(PaintTarget target) throws PaintException {
++		super.paintContent(target);
++
++		// Paint chart area options
++		paintOptions(chartAreaOptions, target, CHART_AREA_OPT_NAME_PREFIX,
++				"chartAreaOptionNames", "chartAreaOptionTypes");
++	}
++}
+Index: src/org/vaadin/vaadinvisualizations/ColumnChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/ColumnChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/ColumnChart.java	(working copy)
+@@ -1,7 +1,7 @@
+ package org.vaadin.vaadinvisualizations;
+ 
+ @com.vaadin.ui.ClientWidget(org.vaadin.vaadinvisualizations.widgetset.client.ui.VColumnChart.class)
+-public class ColumnChart extends CommonVisualizationComponent{
++public class ColumnChart extends ChartAreaVisualizationComponent{
+ 
+ 
+ 	/**
+Index: src/org/vaadin/vaadinvisualizations/CommonVisualizationComponent.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/CommonVisualizationComponent.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/CommonVisualizationComponent.java	(working copy)
+@@ -23,12 +23,12 @@
+ 	}
+ 	
+ 	@Override
+-	protected void paintOptions(Map<String, Object> ops, PaintTarget target)
++	protected void paintOptions(Map<String, Object> ops, PaintTarget target, String attributeNamePrefix, String optionNames, String optionTypes)
+ 		throws PaintException {
+ 		
+ 		if (colors != null){
+ 			target.addAttribute(COMMON_OPT_NAME_PREFIX + COLORS, colors);
+ 		}
+-		super.paintOptions(ops, target);
++		super.paintOptions(ops, target, attributeNamePrefix, optionNames, optionTypes);
+ 	}
+ }
+Index: src/org/vaadin/vaadinvisualizations/LineChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/LineChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/LineChart.java	(working copy)
+@@ -1,7 +1,7 @@
+ package org.vaadin.vaadinvisualizations;
+ 
+ @com.vaadin.ui.ClientWidget(org.vaadin.vaadinvisualizations.widgetset.client.ui.VLineChart.class)
+-public class LineChart extends CommonVisualizationComponent{
++public class LineChart extends ChartAreaVisualizationComponent{
+ 
+ 
+ 	/**
+Index: src/org/vaadin/vaadinvisualizations/PieChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/PieChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/PieChart.java	(working copy)
+@@ -1,7 +1,7 @@
+ package org.vaadin.vaadinvisualizations;
+ 
+ @com.vaadin.ui.ClientWidget(org.vaadin.vaadinvisualizations.widgetset.client.ui.VPieChart.class)
+-public class PieChart extends CommonVisualizationComponent{
++public class PieChart extends ChartAreaVisualizationComponent{
+ 
+ 	
+ 
+Index: src/org/vaadin/vaadinvisualizations/ScatterChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/ScatterChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/ScatterChart.java	(working copy)
+@@ -1,7 +1,7 @@
+ package org.vaadin.vaadinvisualizations;
+ 
+ @com.vaadin.ui.ClientWidget(org.vaadin.vaadinvisualizations.widgetset.client.ui.VScatterChart.class)
+-public class ScatterChart extends CommonVisualizationComponent{
++public class ScatterChart extends ChartAreaVisualizationComponent{
+ 
+ 
+ 
+Index: src/org/vaadin/vaadinvisualizations/VaadinvisualizationApplication.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/VaadinvisualizationApplication.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/VaadinvisualizationApplication.java	(working copy)
+@@ -1,18 +1,19 @@
+ package org.vaadin.vaadinvisualizations;
+ 
+-import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
+-import java.util.Calendar;
+ import java.util.GregorianCalendar;
+-import java.util.Locale;
+-
+ import java.util.HashMap;
+ import java.util.List;
+ 
+ import com.vaadin.Application;
+ import com.vaadin.data.Item;
+-import com.vaadin.ui.*;
++import com.vaadin.ui.Button;
+ import com.vaadin.ui.Button.ClickEvent;
++import com.vaadin.ui.Component;
++import com.vaadin.ui.HorizontalLayout;
++import com.vaadin.ui.TextField;
++import com.vaadin.ui.VerticalLayout;
++import com.vaadin.ui.Window;
+ 
+ public class VaadinvisualizationApplication extends Application {
+ 	/**
+@@ -92,9 +93,14 @@
+ 		pc.add("Do Vaadin", 7);
+ 		pc.setOption("width", 600);
+ 		pc.setOption("height", 400);
++		pc.setChartAreaWidth(400);
++		pc.setChartAreaHeight(200);
++		pc.setChartAreaLeft(50);
++		pc.setChartAreaTop(50);
+ 		pc.setOption("title", "My Daily Activities");
+ 		pc.setColors("red", "green", "#0000ff", "orange", "slategray");
+ 		pc.setOption("legend", "right");
++		pc.setOption("is3D", true);
+ 		//pc.setOption("is3D", true);
+ 		w.addWindow(createSubWindow(pc, "Pie Chart", "536px","436px"));
+ 
+@@ -106,6 +112,10 @@
+ 		bc.addXAxisLabel("Year");
+ 		bc.addBar("Expenses");
+ 		bc.addBar("Sales");
++		bc.setChartAreaWidth(400);
++		bc.setChartAreaHeight(200);
++		bc.setChartAreaLeft(50);
++		bc.setChartAreaTop(50);
+ 		bc.add("2004", new double[]{100,200});
+ 		bc.add("2005", new double[]{75,100});
+ 		bc.add("2006", new double[]{32,234});
+@@ -124,6 +134,10 @@
+ 		ac.addXAxisLabel("Year");
+ 		ac.addArea("Expenses");
+ 		ac.addArea("Sales");
++		ac.setChartAreaWidth(400);
++		ac.setChartAreaHeight(200);
++		ac.setChartAreaLeft(50);
++		ac.setChartAreaTop(50);
+ 		ac.add("2004", new double[]{100,200});
+ 		ac.add("2005", new double[]{75,100});
+ 		ac.add("2006", new double[]{32,234});
+@@ -142,6 +156,10 @@
+ 		cc.addXAxisLabel("Year");
+ 		cc.addColumn("Expenses");
+ 		cc.addColumn("Sales");
++		cc.setChartAreaWidth(400);
++		cc.setChartAreaHeight(200);
++		cc.setChartAreaLeft(50);
++		cc.setChartAreaTop(50);
+ 		cc.add("2004", new double[]{100,200});
+ 		cc.add("2005", new double[]{75,100});
+ 		cc.add("2006", new double[]{32,234});
+@@ -180,6 +198,10 @@
+ 		lc.addXAxisLabel("Year");
+ 		lc.addLine("Expenses");
+ 		lc.addLine("Sales");
++		lc.setChartAreaWidth(400);
++		lc.setChartAreaHeight(200);
++		lc.setChartAreaLeft(50);
++		lc.setChartAreaTop(50);
+ 		lc.add("2004", new double[]{100,200});
+ 		lc.add("2005", new double[]{75,100});
+ 		lc.add("2006", new double[]{32,234});
+@@ -199,6 +221,10 @@
+ 		sc.addXAxisLabel("Age");
+ 		sc.addPoint("Weight");
+ 		sc.addPoint("Height");
++		sc.setChartAreaWidth(400);
++		sc.setChartAreaHeight(200);
++		sc.setChartAreaLeft(50);
++		sc.setChartAreaTop(50);
+ 		sc.add(new double[]{6,20,110});
+ 		sc.add(new double[]{7,25, 115});
+ 		sc.add(new double[]{8,30,120});
+Index: src/org/vaadin/vaadinvisualizations/VisualizationComponent.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/VisualizationComponent.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/VisualizationComponent.java	(working copy)
+@@ -6,14 +6,12 @@
+ import java.util.List;
+ import java.util.Map;
+ 
++import org.vaadin.vaadinvisualizations.widgetset.client.ui.VVisualizationWidget;
+ 
+ import com.vaadin.terminal.PaintException;
+ import com.vaadin.terminal.PaintTarget;
+-
+ import com.vaadin.ui.AbstractComponent;
+ 
+-import org.vaadin.vaadinvisualizations.widgetset.client.ui.VVisualizationWidget;
+-
+ public class VisualizationComponent extends AbstractComponent {
+ 
+ 	private static final long serialVersionUID = 8773635639061447457L;
+@@ -151,8 +149,8 @@
+ 				.toArray(new String[] {}));
+ 
+ 		// Paint options
+-		paintOptions(options, target);
+-
++		paintOptions(options, target, OPT_NAME_PREFIX, "optionNames", "optionTypes");
++		
+ 		// Paint all data from the string table
+ 		paintTableData(table, target);
+ 
+@@ -162,7 +160,7 @@
+ 		target.addVariable(this, "collapse", 2);
+ 	}
+ 
+-	protected void paintOptions(Map<String, Object> ops, PaintTarget target)
++	protected void paintOptions(Map<String, Object> ops, PaintTarget target, String attributeNamePrefix, String optionNames, String optionTypes)
+ 			throws PaintException {
+ 		
+ 		String[] opNames = ops.keySet().toArray(new String[]{});
+@@ -170,35 +168,33 @@
+ 		int i = 0;
+ 		
+ 		for (String opName :opNames) {
+-			
+ 			Object opValue = ops.get(opName);
+ 			
+-			
+ 			if (opValue instanceof Boolean) {
+ 				opTypes[i++] = "boolean";
+ 				target
+-						.addAttribute(OPT_NAME_PREFIX + opName,
++						.addAttribute(attributeNamePrefix + opName,
+ 								(Boolean) opValue);
+ 			} else if (opValue instanceof Integer) {
+ 				opTypes[i++] = "int";
+ 				target
+-						.addAttribute(OPT_NAME_PREFIX + opName,
++						.addAttribute(attributeNamePrefix + opName,
+ 								(Integer) opValue);
+ 			} else if (opValue instanceof Double) {
+ 				opTypes[i++] = "double";
+-				target.addAttribute(OPT_NAME_PREFIX + opName, (Double) opValue);
++				target.addAttribute(attributeNamePrefix + opName, (Double) opValue);
+ 			}  else if (opValue instanceof String[]){
+ 				opTypes[i++] = "string[]";
+-				target.addAttribute(OPT_NAME_PREFIX + opName, (String[]) opValue);
++				target.addAttribute(attributeNamePrefix + opName, (String[]) opValue);
+ 				
+ 			}else if (opValue instanceof String) {
+ 				opTypes[i++] = "string";
+-				target.addAttribute(OPT_NAME_PREFIX + opName, (String) opValue);
++				target.addAttribute(attributeNamePrefix + opName, (String) opValue);
+ 			}
+ 		}
+ 
+-		target.addAttribute("optionNames", opNames );
+-		target.addAttribute("optionTypes", opTypes);
++		target.addAttribute(optionNames, opNames );
++		target.addAttribute(optionTypes, opTypes);
+ 
+ 	}
+ 
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VAreaChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VAreaChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VAreaChart.java	(working copy)
+@@ -1,18 +1,16 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import com.vaadin.terminal.gwt.client.ApplicationConnection;
+-
+ import com.google.gwt.visualization.client.AbstractDataTable;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.VisualizationUtils;
++import com.google.gwt.visualization.client.visualizations.corechart.AreaChart;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ 
+-import com.google.gwt.visualization.client.visualizations.AreaChart;
+-import com.google.gwt.visualization.client.visualizations.AreaChart.Options;
+ 
+ 
++public class VAreaChart extends VChartAreaVisualizationWidget {
+ 
+-public class VAreaChart extends VCommonVisualizationWidget {
+-
+ 	/** Set the tagname used to statically resolve widget from UIDL. */
+ 	public static final String TAGNAME = "areachart";
+ 
+@@ -70,7 +68,8 @@
+ 				"VAreaChart createOptions");
+ 		Options ops = Options.create();
+ 		// Default size
+-		ops.setSize(400, 400);
++		ops.setWidth(400);
++		ops.setHeight(400);
+ 		
+ 		return ops;
+ 	}
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VBarChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VBarChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VBarChart.java	(working copy)
+@@ -1,17 +1,15 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import com.vaadin.terminal.gwt.client.ApplicationConnection;
+-
+ import com.google.gwt.visualization.client.AbstractDataTable;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.VisualizationUtils;
++import com.google.gwt.visualization.client.visualizations.corechart.BarChart;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ 
+-import com.google.gwt.visualization.client.visualizations.BarChart;
+-import com.google.gwt.visualization.client.visualizations.BarChart.Options;
+ 
++public class VBarChart extends VChartAreaVisualizationWidget {
+ 
+-public class VBarChart extends VCommonVisualizationWidget {
+-
+ 	/** Set the tagname used to statically resolve widget from UIDL. */
+ 	public static final String TAGNAME = "barchart";
+ 
+@@ -69,7 +67,8 @@
+ 				"VBarChart createOptions");
+ 		Options ops = Options.create();
+ 		// Default size
+-		ops.setSize(400, 240);
++		ops.setWidth(400);
++		ops.setHeight(240);
+ 		
+ 		return ops;
+ 	}
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VChartAreaVisualizationWidget.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VChartAreaVisualizationWidget.java	(revision 0)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VChartAreaVisualizationWidget.java	(revision 0)
+@@ -0,0 +1,151 @@
++package org.vaadin.vaadinvisualizations.widgetset.client.ui;
++
++import com.google.gwt.visualization.client.AbstractDrawOptions;
++import com.google.gwt.visualization.client.ChartArea;
++import com.google.gwt.visualization.client.CommonOptions;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
++import com.vaadin.terminal.gwt.client.UIDL;
++
++public abstract class VChartAreaVisualizationWidget extends VCommonVisualizationWidget {
++
++	public static final String CHART_AREA_OPT_NAME_PREFIX = "chart_area_opt_";
++	
++	private String[] chartAreaOpNames;
++	
++	private String[] chartAreaOpTypes;
++	
++	private Object[] chartAreaOpValues;
++
++	@Override
++	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
++		// This call should be made first. Ensure correct implementation,
++		// and let the containing layout manage caption, etc.
++		if (client.updateComponent(this, uidl, true)) {
++			return;
++		}
++
++		if (uidl.hasAttribute("chartAreaOptionNames")
++				&& uidl.hasAttribute("chartAreaOptionTypes")) {
++			this.chartAreaOpNames = uidl.getStringArrayAttribute("chartAreaOptionNames");
++			this.chartAreaOpTypes = uidl.getStringArrayAttribute("chartAreaOptionTypes");
++			this.chartAreaOpValues = new Object[chartAreaOpNames.length];
++			for (int i = 0; i < chartAreaOpNames.length; i++) {
++				String name = chartAreaOpNames[i];
++				String type = chartAreaOpTypes[i];
++				if (OPTYPE_BOOLEAN.equals(type)) {
++					chartAreaOpValues[i] = new Boolean(uidl
++							.getBooleanAttribute(CHART_AREA_OPT_NAME_PREFIX + name));
++				} else if (OPTYPE_INT.equals(type)) {
++					chartAreaOpValues[i] = new Integer(uidl
++							.getIntAttribute(CHART_AREA_OPT_NAME_PREFIX + name));
++				} else if (OPTYPE_DOUBLE.equals(type)) {
++					chartAreaOpValues[i] = new Double(uidl
++							.getDoubleAttribute(CHART_AREA_OPT_NAME_PREFIX + name));
++				} else {
++					chartAreaOpValues[i] = uidl.getStringAttribute(CHART_AREA_OPT_NAME_PREFIX
++							+ name);
++				}
++				ApplicationConnection.getConsole().log(
++						"VVisualizationWidget chart area option " + name + " (" + type
++						+ ") = " + chartAreaOpValues[i]);
++			}
++		}
++
++		super.updateFromUIDL(uidl, client);
++	}
++
++	@Override
++	protected AbstractDrawOptions convertOptions(String[] opNames,
++			String[] opTypes, Object[] opValues) {
++		
++		AbstractDrawOptions options = super.convertOptions(opNames, opTypes, opValues);
++		
++		if (!(options instanceof CommonOptions)){
++			ApplicationConnection.getConsole().error("Unexpected options type received in VCommonVisualizationWidget");
++			return options;
++		}
++		
++		if (options instanceof Options) {
++			Options coreChartOptions = (Options) options;
++			coreChartOptions.setChartArea(convertChartArea());
++			return coreChartOptions;
++		}
++		
++		return options;
++	}
++
++	protected ChartArea convertChartArea() {
++		ChartArea chartArea = ChartArea.create();
++		if (chartAreaOpNames == null) {
++			return chartArea;
++		}
++
++		for (int i = 0; i < chartAreaOpNames.length; i++) {
++			String name = chartAreaOpNames[i];
++			String type = chartAreaOpTypes[i];
++			Object value = chartAreaOpValues[i];
++
++			if ("height".equals(name)) {
++				setChartAreaHeight(chartArea, type, value);
++			} else if ("left".equals(name)) {
++				setChartAreaLeft(chartArea, type, value);
++			} else if ("top".equals(name)) {
++				setChartAreaTop(chartArea, type, value);
++			} else if ("width".equals(name)) {
++				setChartAreaWidth(chartArea, type, value);
++			} else {
++				ApplicationConnection.getConsole().log("Name " + name +  " is invalid for chart area. Value: " + value.toString());
++			}
++		}
++		return chartArea;
++	}
++	
++	private void setChartAreaHeight(ChartArea chartArea, String type, Object value) {
++		if (OPTYPE_DOUBLE.equals(type)) {
++			ApplicationConnection.getConsole().log("DOU" + value.toString());
++			chartArea.setHeight(((Double) value).doubleValue());
++		} else if (OPTYPE_STRING.equals(type)) {
++			ApplicationConnection.getConsole().log("STR " + value.toString());
++			chartArea.setHeight(String.valueOf(value));
++		} else {
++			ApplicationConnection.getConsole().log("Type " + type +  " is invalid for chart area height property. Value: " + value.toString());
++		}
++	}
++
++	private void setChartAreaLeft(ChartArea chartArea, String type, Object value) {
++		if (OPTYPE_DOUBLE.equals(type)) {
++			ApplicationConnection.getConsole().log("DOU" + value.toString());
++			chartArea.setLeft(((Double) value).doubleValue());
++		} else if (OPTYPE_STRING.equals(type)) {
++			ApplicationConnection.getConsole().log("STR " + value.toString());
++			chartArea.setLeft(String.valueOf(value));
++		} else {
++			ApplicationConnection.getConsole().log("Type " + type +  " is invalid for chart area left property. Value: " + value.toString());
++		}
++	}
++	
++	private void setChartAreaTop(ChartArea chartArea, String type, Object value) {
++		if (OPTYPE_DOUBLE.equals(type)) {
++			ApplicationConnection.getConsole().log("DOU" + value.toString());
++			chartArea.setTop(((Double) value).doubleValue());
++		} else if (OPTYPE_STRING.equals(type)) {
++			ApplicationConnection.getConsole().log("STR " + value.toString());
++			chartArea.setTop(String.valueOf(value));
++		} else {
++			ApplicationConnection.getConsole().log("Type " + type +  " is invalid for chart area top property. Value: " + value.toString());
++		}
++	}
++	
++	private void setChartAreaWidth(ChartArea chartArea, String type, Object value) {
++		if (OPTYPE_DOUBLE.equals(type)) {
++			ApplicationConnection.getConsole().log("DOU" + value.toString());
++			chartArea.setWidth(((Double) value).doubleValue());
++		} else if (OPTYPE_STRING.equals(type)) {
++			ApplicationConnection.getConsole().log("STR " + value.toString());
++			chartArea.setWidth(String.valueOf(value));
++		} else {
++			ApplicationConnection.getConsole().log("Type " + type +  " is invalid for chart area width property. Value: " + value.toString());
++		}
++	}
++}
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VColumnChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VColumnChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VColumnChart.java	(working copy)
+@@ -1,17 +1,15 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import com.vaadin.terminal.gwt.client.ApplicationConnection;
+-
+ import com.google.gwt.visualization.client.AbstractDataTable;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.VisualizationUtils;
++import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ 
+-import com.google.gwt.visualization.client.visualizations.ColumnChart;
+-import com.google.gwt.visualization.client.visualizations.ColumnChart.Options;
+ 
++public class VColumnChart extends VChartAreaVisualizationWidget {
+ 
+-public class VColumnChart extends VCommonVisualizationWidget {
+-
+ 	/** Set the tagname used to statically resolve widget from UIDL. */
+ 	public static final String TAGNAME = "columnchart";
+ 
+@@ -69,7 +67,8 @@
+ 				"VColumnChart createOptions");
+ 		Options ops = Options.create();
+ 		// Default size
+-		ops.setSize(400,240);
++		ops.setWidth(400);
++		ops.setHeight(240);
+ 		
+ 		return ops;
+ 	}
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VLineChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VLineChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VLineChart.java	(working copy)
+@@ -1,17 +1,15 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import com.vaadin.terminal.gwt.client.ApplicationConnection;
+-
+ import com.google.gwt.visualization.client.AbstractDataTable;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.VisualizationUtils;
++import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ 
+-import com.google.gwt.visualization.client.visualizations.LineChart;
+-import com.google.gwt.visualization.client.visualizations.LineChart.Options;
+ 
++public class VLineChart extends VChartAreaVisualizationWidget {
+ 
+-public class VLineChart extends VCommonVisualizationWidget {
+-
+ 	/** Set the tagname used to statically resolve widget from UIDL. */
+ 	public static final String TAGNAME = "linechart";
+ 
+@@ -69,7 +67,8 @@
+ 				"VLineChart createOptions");
+ 		Options ops = Options.create();
+ 		// Default size
+-		ops.setSize(400,240);
++		ops.setWidth(400);
++		ops.setHeight(240);
+ 		
+ 		return ops;
+ 	}
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VPieChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VPieChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VPieChart.java	(working copy)
+@@ -1,18 +1,16 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import com.vaadin.terminal.gwt.client.ApplicationConnection;
+-
+ import com.google.gwt.visualization.client.AbstractDataTable;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.VisualizationUtils;
+-
+-import com.google.gwt.visualization.client.visualizations.PieChart;
+-import com.google.gwt.visualization.client.visualizations.PieChart.Options;
+ import com.google.gwt.visualization.client.visualizations.PieChart.PieLegendPosition;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.google.gwt.visualization.client.visualizations.corechart.PieChart;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ 
+ 
+ 
+-public class VPieChart extends VCommonVisualizationWidget {
++public class VPieChart extends VChartAreaVisualizationWidget {
+ 
+ 	/** Set the tagname used to statically resolve widget from UIDL. */
+ 	public static final String TAGNAME = "piechart";
+@@ -71,7 +69,8 @@
+ 				"VPieChart createOptions");
+ 		Options ops = Options.create();
+ 		// Default size
+-		ops.setSize(200, 200);
++		ops.setWidth(200);
++		ops.setHeight(200);
+ 		ops.setLegend(PieLegendPosition.LABEL);
+ 
+ 		return ops;
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VScatterChart.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VScatterChart.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VScatterChart.java	(working copy)
+@@ -1,17 +1,15 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import com.vaadin.terminal.gwt.client.ApplicationConnection;
+-
+ import com.google.gwt.visualization.client.AbstractDataTable;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.VisualizationUtils;
++import com.google.gwt.visualization.client.visualizations.corechart.Options;
++import com.google.gwt.visualization.client.visualizations.corechart.ScatterChart;
++import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ 
+-import com.google.gwt.visualization.client.visualizations.ScatterChart;
+-import com.google.gwt.visualization.client.visualizations.ScatterChart.Options;
+ 
++public class VScatterChart extends VChartAreaVisualizationWidget {
+ 
+-public class VScatterChart extends VCommonVisualizationWidget {
+-
+ 	/** Set the tagname used to statically resolve widget from UIDL. */
+ 	public static final String TAGNAME = "scatterchart";
+ 
+@@ -69,7 +67,8 @@
+ 				"VScatterChart createOptions");
+ 		Options ops = Options.create();
+ 		// Default size
+-		ops.setSize(400,240);
++		ops.setWidth(400);
++		ops.setHeight(240);
+ 		
+ 		return ops;
+ 	}
+Index: src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VVisualizationWidget.java
+===================================================================
+--- src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VVisualizationWidget.java	(revision 18303)
++++ src/org/vaadin/vaadinvisualizations/widgetset/client/ui/VVisualizationWidget.java	(working copy)
+@@ -1,35 +1,29 @@
+ package org.vaadin.vaadinvisualizations.widgetset.client.ui;
+ 
+-import java.util.Date;
+-
+ import com.google.gwt.core.client.JsArray;
+ import com.google.gwt.i18n.client.DateTimeFormat;
+-
+ import com.google.gwt.user.client.ui.SimplePanel;
+ import com.google.gwt.visualization.client.AbstractDataTable;
++import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
+ import com.google.gwt.visualization.client.AbstractDrawOptions;
+ import com.google.gwt.visualization.client.DataTable;
+-import com.google.gwt.visualization.client.Properties;
+ import com.google.gwt.visualization.client.Selectable;
+ import com.google.gwt.visualization.client.Selection;
+-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
+ import com.google.gwt.visualization.client.events.SelectHandler;
+-import com.google.gwt.visualization.client.visualizations.ImageChart;
+ import com.vaadin.terminal.gwt.client.ApplicationConnection;
+ import com.vaadin.terminal.gwt.client.Paintable;
+ import com.vaadin.terminal.gwt.client.UIDL;
+-import com.google.gwt.core.client.JavaScriptObject;
+ 
+ public abstract class VVisualizationWidget extends SimplePanel implements
+ 		Paintable{
+ 
+-	private static final Object OPTYPE_BOOLEAN = "boolean";
++	protected static final Object OPTYPE_BOOLEAN = "boolean";
+ 
+-	private static final Object OPTYPE_INT = "int";
++	protected static final Object OPTYPE_INT = "int";
+ 
+-	private static final Object OPTYPE_DOUBLE = "double";
++	protected static final Object OPTYPE_DOUBLE = "double";
+ 
+-	private static final Object OPTYPE_STRING = "string";
++	protected static final Object OPTYPE_STRING = "string";
+ 	
+ 
+ 	public static final String OPT_NAME_PREFIX = "opt_";
